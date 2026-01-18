@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>粤韵乡音 · 中华方言荟</title>
+    <style>
+        :root {
+            --primary-color: #1a5fb4;
+            --secondary-color: #ff6b35;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --white: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --animate-duration: 0.8s;
+            --animate-delay: 0.2s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding-top: 70px;
+        }
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { color: var(--primary-color); font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-menu { display: flex; gap: 2rem; list-style: none; }
+        .nav-menu a { text-decoration: none; color: var(--text-color); font-weight: 500; transition: color 0.3s; }
+        .nav-menu a:hover { color: var(--primary-color); }
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+        .hero {
+            height: calc(100vh - 70px);
+            background: linear-gradient(rgba(26, 95, 180, 0.3), rgba(58, 134, 255, 0.7)), url('./images/beijing1.jpg') center/cover no-repeat;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(transparent, var(--bg-color));
+        }
+        .hero-content h2 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .search-box {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .search-box input {
+            flex: 1;
+            padding: 1rem;
+	border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-box button {
+            padding: 1rem 1.5rem;
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .search-box button:hover { background: #e55a2d; }
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            transition-delay: var(--animate-delay);
+        }
+        .bg-light { background-color: #f0f4f8; border-radius: var(--border-radius); margin: 2rem auto; }
+        .map-container {
+            width: 100%;
+            height: 750px;
+            background-color: #f5f5f5;;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity var(--animate-duration) ease-out 0.3s,transform var(--animate-duration) ease-out 0.3s;
+        }
+        .section.animate-in .map-container {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .map-placeholder {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('./images/map.jpg') center/cover no-repeat;
+            background-blend-mode: normal;
+            background-color: transparent;
+        }
+        /* .map-placeholder::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://picsum.photos/id/102/1200/500') center/cover no-repeat;
+            opacity: 0.25;
+            mix-blend-mode: multiply;
+        } */
+        .region-tag {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.7rem 1rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            border: 1px solid var(--primary-color);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease-out,transform 0.5s ease-out;
+            white-space: nowrap; /* 强制不换行，防止标签文字分行 */
+            pointer-events: all;  /* 确保点击优先级 */
+        }
+        .section.animate-in .region-tag {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .section.animate-in .region-tag.guangdong { transition-delay: 0.4s; }
+        .section.animate-in .region-tag.jiangzhe { transition-delay: 0.5s; }
+        .section.animate-in .region-tag.sichuan { transition-delay: 0.6s; }
+        .section.animate-in .region-tag.shandong { transition-delay: 0.7s; }
+        .section.animate-in .region-tag.hunan { transition-delay: 0.8s; }
+        .section.animate-in .region-tag.guangxi { transition-delay: 0.9s; }
+        .section.animate-in .region-tag.fujian { transition-delay: 1.0s; }
+        .section.animate-in .region-tag.shanxi { transition-delay: 1.1s; }
+        .section.animate-in .region-tag.tibetan { transition-delay: 1.2s; }
+        .section.animate-in .region-tag.uygur { transition-delay: 1.3s; }
+        .region-tag:hover {
+            background: linear-gradient(135deg, #ff6b35, #ffc107);
+            color: var(--white);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: #ff6b35;
+            z-index: 20; /* hover时置顶，不被其他标签遮挡 */
+        }
+        .region-tag.guangdong { top: 78%; left: 68%; }
+        .region-tag.jiangzhe { top: 62%; left: 74%; }
+        .region-tag.sichuan { top: 58%; left: 54%; }
+        .region-tag.shandong { top: 44%; left: 70%; }
+        .region-tag.hunan { top: 65%; left: 63%; }
+        .region-tag.guangxi { top: 72%; left: 50%; }
+        .region-tag.fujian { top: 70%; left: 74%; }
+        .region-tag.shanxi { top: 38%; left: 58%; }
+        .region-tag.tibetan { top: 54%; left: 16%; }
+        .region-tag.uygur { top: 32%; left: 14%; }
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        .course-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .section.animate-in .course-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section.animate-in .course-card:nth-child(1) { transition-delay: 0.3s; }
+        .section.animate-in .course-card:nth-child(2) { transition-delay: 0.4s; }
+        .section.animate-in .course-card:nth-child(3) { transition-delay: 0.5s; }
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .course-card img { 
+            width: 100%; 
+            height: 180px; 
+            object-fit: cover; 
+            transition: transform 0.5s;
+        }
+        .course-card:hover img { transform: scale(1.05); }
+        .course-card h3 { padding: 1.2rem 1.2rem 0.8rem; color: var(--primary-color); }
+        .course-card p { padding: 0 1.2rem; color: #666; font-size: 0.95rem; flex: 1; }
+        .course-meta { 
+            padding: 1rem 1.2rem; 
+            color: #888; 
+            font-size: 0.9rem; 
+            background: #f8f8f8; 
+            display: flex;
+            justify-content: space-between;
+        }
+        .enroll-btn {
+            margin: 1.2rem;
+            padding: 0.8rem 1rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: calc(100% - 2.4rem);
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .enroll-btn:hover {
+            background: #154a8c;
+        }
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+        .ai-box {
+            flex: 1 1 70%;
+            min-width: 100%;
+            max-width: 100%;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .hakka-game-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 550px;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .section.animate-in .ai-box { transition-delay: 0.3s; }
+        .section.animate-in .hakka-game-box { transition-delay: 0.4s; }
+        .section.animate-in .ai-box,
+        .section.animate-in .hakka-game-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .ai-box h3, .hakka-game-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 1.5rem;
+        }
+        .result-area {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f0f0f0;
+            border-radius: var(--border-radius);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+        }
+        .leaderboard {
+            list-style: none;
+            text-align: left;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 0 0.5rem;
+            margin-top: 1rem;
+        }
+        .leaderboard li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .leaderboard li:nth-child(1) { color: #ffd700; font-weight: bold; }
+        .leaderboard li:nth-child(2) { color: #c0c0c0; font-weight: bold; }
+        .leaderboard li:nth-child(3) { color: #cd7f32; font-weight: bold; }
+        .exchange-btn {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .exchange-btn:hover { background: #e55a2d; }
+        .hakka-word-container {
+            margin: 1.5rem 0;
+        }
+        .hakka-word {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 1rem 0;
+        }
+        .pronunciation {
+            color: #666;
+            font-style: italic;
+            margin: 0.5rem 0;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .option-btn {
+            padding: 1rem;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        .option-btn:hover {
+            background: #f0f0f0;
+        }
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .option-btn.incorrect {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .next-word-btn {
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+            display: none;
+        }
+        .next-word-btn:hover {
+            background: #154a8c;
+        }
+        .game-feedback {
+            margin-top: 1rem;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        .popularize-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .popularize-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            text-align: left;
+            transition: transform 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .section.animate-in .popularize-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section.animate-in .popularize-card:nth-child(1) { transition-delay: 0.3s; }
+        .section.animate-in .popularize-card:nth-child(2) { transition-delay: 0.4s; }
+        .section.animate-in .popularize-card:nth-child(3) { transition-delay: 0.5s; }
+        .popularize-card:hover {
+            transform: translateY(-5px);
+        }
+        .popularize-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .popularize-card .fun-fact {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+        .popularize-card .fun-fact strong {
+            color: var(--secondary-color);
+        }
+        .popularize-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out 0.3s,transform var(--animate-duration) ease-out 0.3s;
+        }
+        .section.animate-in .product-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .product-img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .product-img:hover img {
+            transform: scale(1.03);
+        }
+        .product-info {
+            text-align: left;
+        }
+        .product-info h3 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .product-info p {
+            margin-bottom: 1.8rem;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4E5969;
+        }
+        .product-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            padding: 0;
+        }
+        .product-features li {
+            padding: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 1.05rem;
+            color: #334155;
+            border-bottom: 1px solid #F0F2F5;
+        }
+        .product-features li::before {
+            content: '✅';
+            margin-top: 0.3rem;
+            color: var(--primary-color);
+        }
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #333;
+            color: var(--white);
+            margin-top: 5rem;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .footer p { margin-bottom: 1rem; font-size: 1.1rem; }
+        .footer .copyright { font-size: 0.9rem; color: #aaa; }
+        @media (max-width: 992px) {
+            .hero-content h2 { font-size: 2.5rem; }
+            .section h2 { font-size: 2.2rem; }
+            .map-container { height: 450px; }
+            .product-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-menu { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 70px; 
+                left: 0; 
+                width: 100%; 
+                background: var(--white); 
+                padding: 1.5rem 2rem; 
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            .nav-menu.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .hero-content h2 { font-size: 2rem; }
+            .hero-content p { font-size: 1rem; }
+            .section { padding: 3rem 1.5rem; }
+            .section h2 { font-size: 1.8rem; }
+            .map-container { height: 400px; }
+            .course-grid { gap: 1.5rem; }
+            .game-container { gap: 1.5rem; }
+            .ai-box, .hakka-game-box { padding: 1.5rem; }
+            .options { grid-template-columns: 1fr; }
+            .product-info h3 { font-size: 1.8rem; }
+            .product-info p { font-size: 1rem; }
+            .product-features li { font-size: 0.95rem; }
+        }
+        @media (max-width: 576px) {
+            .nav-container { padding: 1rem 1.5rem; }
+            .logo { font-size: 1.3rem; }
+            .hero-content h2 { font-size: 1.8rem; }
+            .search-box { max-width: 90%; }
+            .map-container { height: 350px; }
+            .region-tag { font-size: 0.9rem; padding: 0.5rem 0.8rem; }
+            .course-card img { height: 150px; }
+            .popularize-container { grid-template-columns: 1fr; }
+            .region-tag { transform-origin: center; }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.3s;
+        }
+        .close-modal:hover { color: #ff4757; }
+        .modal-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        .modal-content p { margin-bottom: 1rem; line-height: 1.8; }
+        .dialect-example {
+            background: #f8f8f8;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+        }
+        .dialect-example h4 { color: var(--secondary-color); margin-bottom: 0.5rem; }
+        
+        /* 互动方言词典 完整样式 - 适配原有页面风格 */
+        .dictionary-section {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .dict-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+            gap: 1.5rem;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .dict-panel {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        .dict-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .dict-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .dict-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+        .dict-search {
+            position: relative;
+            flex: 1 1 180px;
+            width: 100%;
+        }
+        .dict-search input {
+            width: 100%;
+            padding: 0.65rem 2.1rem 0.65rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            outline: none;
+            font-size: 0.9rem;
+            transition: border 0.3s;
+        }
+        .dict-search input:focus {
+            border-color: var(--primary-color);
+        }
+        .dict-search span {
+            position: absolute;
+            right: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            opacity: 0.6;
+            color: var(--text-color);
+        }
+        .dict-select {
+            padding: 0.55rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .dict-select:focus {
+            border-color: var(--primary-color);
+        }
+        .dict-toggle-small {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .dict-toggle-small input {
+            accent-color: var(--primary-color);
+        }
+        .dict-virtual-container {
+            position: relative;
+            height: 380px;
+            overflow: auto;
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 255, 0.96));
+            width: 100%;
+        }
+        .dict-virtual-inner {
+            position: relative;
+            width: 100%;
+        }
+        .dict-item {
+            position: relative;
+            margin: 0.5rem 0.9rem;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: grid;
+            grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.2fr) auto;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: calc(100% - 1.8rem);
+        }
+        .dict-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .dict-word-main {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .dict-word {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .dict-ipa {
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .dict-meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.1rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(26, 95, 180, 0.09);
+            font-size: 0.78rem;
+            color: #555;
+        }
+        .dict-meaning {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.5;
+        }
+        .dict-example {
+            font-size: 0.83rem;
+            color: #777;
+            margin-top: 0.2rem;
+        }
+        .dict-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.4rem;
+        }
+        .dict-audio-btn,
+        .dict-fav-btn {
+            border-radius: 999px;
+            border: none;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.3s;
+        }
+        .dict-audio-btn {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        .dict-audio-btn:hover {
+            background: #154a8c;
+        }
+        .dict-fav-btn {
+            background: rgba(255, 191, 0, 0.12);
+            color: #c29500;
+        }
+        .dict-fav-btn.active {
+            background: linear-gradient(135deg, #ffb347, #ffcc33);
+            color: #6b4500;
+        }
+        .dict-feedback-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: #999;
+        }
+        .dict-feedback-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.78rem;
+            color: #888;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.15rem;
+        }
+        .dict-empty {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        .dict-side-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--primary-color);
+        }
+        .dict-fav-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.4rem;
+            max-height: 150px;
+            overflow: auto;
+            margin-bottom: 0.8rem;
+            width: 100%;
+        }
+        .dict-fav-item {
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(26, 95, 180, 0.06);
+            font-size: 0.82rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .dict-fav-item span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dict-fav-remove {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #999;
+            margin-left: 0.3rem;
+            transition: color 0.3s;
+        }
+        .dict-fav-remove:hover {
+            color: #ff4757;
+        }
+        .dict-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.6rem 0.8rem;
+            margin-top: 0.4rem;
+            width: 100%;
+        }
+        .dict-form textarea {
+            grid-column: 1 / -1;
+            resize: vertical;
+        }
+        .dict-form input,
+        .dict-form textarea {
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 0.45rem 0.6rem;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .dict-form input:focus,
+        .dict-form textarea:focus {
+            border-color: var(--primary-color);
+        }
+        .dict-form small {
+            font-size: 0.75rem;
+            color: #999;
+        }
+        .dict-submit-btn {
+            grid-column: 1 / -1;
+            justify-self: flex-end;
+            margin-top: 0.2rem;
+            padding: 0.45rem 1.2rem;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary-color);
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .dict-submit-btn:hover {
+            background: #154a8c;
+        }
+        .dict-badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.6rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .dict-badge-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .dict-skeleton-row {
+            margin: 0.6rem 0.9rem;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            position: relative;
+            width: calc(100% - 1.8rem);
+        }
+        .dict-skeleton-line {
+            height: 10px;
+            background: linear-gradient(90deg, #e6e9f5, #f4f5fb, #e6e9f5);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.2s linear infinite;
+            border-radius: 999px;
+            margin-bottom: 0.35rem;
+        }
+        .dict-skeleton-line:nth-child(1) {
+            width: 40%;
+            height: 16px;
+        }
+        .dict-skeleton-line:nth-child(2) {
+            width: 75%;
+        }
+        .dict-skeleton-line:nth-child(3) {
+            width: 55%;
+        }
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        /* 粤西方言时间轴样式 */
+        .timeline-section {
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-radius: var(--border-radius);
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .timeline-title {
+            font-size: 2rem;
+            color: var(--white);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .timeline-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        .timeline-item-content {
+            width: calc(50% - 3rem);
+            background: var(--white);
+            padding: 1.5rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease;
+        }
+        .timeline-item:hover .timeline-item-content {
+            transform: translateY(-5px);
+        }
+        .timeline-item-content h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+        .timeline-item-content p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 1.2rem;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border: 4px solid #2575fc;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 2rem;
+            }
+            .timeline-item {
+                flex-direction: row !important;
+                margin-left: 2rem;
+            }
+            .timeline-item-content {
+                width: 100%;
+                margin-left: 2rem;
+            }
+            .timeline-dot {
+                left: 2rem;
+            }
+        }
+        /* 粤西方言发展历史时间轴 - 完美适配本站样式 无冲突 */
+        .yuexi-history-section {
+            padding: 4rem 2rem;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .yuexi-timeline-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .yuexi-timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .yuexi-timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            transform: translateX(-50%);
+            border-radius: 2px;
+            z-index: 1;
+        }
+        .yuexi-timeline-item {
+            display: flex;
+            margin-bottom: 3.5rem;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+        .yuexi-timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        .yuexi-timeline-card {
+            width: calc(50% - 3rem);
+            background: var(--white);
+            padding: 1.8rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+        }
+        .yuexi-timeline-item:hover .yuexi-timeline-card {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        .yuexi-timeline-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .yuexi-timeline-card p {
+            color: #333;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        .yuexi-timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 1.5rem;
+            width: 18px;
+            height: 18px;
+            background: var(--white);
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            transition: all 0.3s;
+        }
+        .yuexi-timeline-item:hover .yuexi-timeline-dot {
+            border-color: var(--secondary-color);
+            transform: translateX(-50%) scale(1.15);
+        }
+        /* 响应式适配 - 和你网站其他板块一致 */
+        @media (max-width: 768px) {
+            .yuexi-timeline-title { font-size: 2rem; }
+            .yuexi-timeline-line { left: 25px; }
+            .yuexi-timeline-item { flex-direction: row !important; margin-left: 0; }
+            .yuexi-timeline-card { width: 100%; margin-left: 2rem; padding: 1.5rem; }
+            .yuexi-timeline-dot { left: 25px; }
+        }
+        @media (max-width: 576px) {
+            .yuexi-history-section { padding: 3rem 1.5rem; }
+            .yuexi-timeline-card { margin-left: 1.5rem; }
+        }
+    </style>
+
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?dd22f9fc2d275a5d5621344c1ca883f1";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🗣️ 粤韵乡音</h1>
+            <div class="mobile-menu-btn">☰</div>
+            <ul class="nav-menu">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#courses">在线学习</a></li>
+                <li><a href="#map">方言地图</a></li>
+                <li><a href="#popularize">方言科普</a></li>
+                <li><a href="#games">趣味互动</a></li>
+                <li><a href="#product">团队产品</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- 首页封面 -->
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h2>守护乡音，传承文化</h2>
+            <p>探索中国各地的方言魅力，在线学习、方言查询、文化展示，让方言活在当下</p>
+            <div class="search-box">
+                <input type="text" id="heroSearchInput" placeholder="🔍 搜索你想了解的板块...">
+                <button id="heroSearchBtn">搜索</button>
+            </div>
+        </div>
+    </header>
+    <!-- 方言地图板块 - 新增闽南语+晋语标签 -->
+    <section id="map" class="section">
+        <h2>🗺️ 探索中国方言</h2>
+        <div class="map-container">
+            <div class="map-placeholder">
+                <div class="region-tag guangdong" data-dialect="粤语">粤语 · 广东</div>
+                <div class="region-tag jiangzhe" data-dialect="吴语">吴语 · 江浙</div>
+                <div class="region-tag sichuan" data-dialect="川渝话">川渝话 · 四川</div>
+                <div class="region-tag shandong" data-dialect="山东话">山东话 · 山东</div>
+                <div class="region-tag hunan" data-dialect="湖南话">湖南话 · 湖南</div>
+                <div class="region-tag guangxi" data-dialect="客家话">客家话 · 桂粤闽</div>
+                <div class="region-tag fujian" data-dialect="闽南语">闽南语 · 福建</div>
+                <div class="region-tag shanxi" data-dialect="晋语">晋语 · 山西</div>
+                <div class="region-tag tibetan" data-dialect="藏语">藏语 · 西藏</div>
+                <div class="region-tag uygur" data-dialect="维吾尔语">维吾尔语 · 新疆</div>
+            </div>
+        </div>
+        <p>点击感兴趣的方言标签，了解更多方言特点和文化背景</p>
+    </section>
+    <!-- 粤西方言发展历史板块 - 适配本站风格 -->
+    <section id="yuexi-history" class="section">
+        <div class="yuexi-history-section">
+            <h2 class="yuexi-timeline-title">📜 粤西方言发展历史</h2>
+            <div class="yuexi-timeline-container">
+                <div class="yuexi-timeline-line"></div>
+
+                <!-- 秦汉时期 - 增两行 -->
+                <div class="yuexi-timeline-item" data-period="秦汉奠基 · 雏形初现">
+                    <div class="yuexi-timeline-card">
+                        <h3>秦汉时期</h3>
+                        <p>中原汉族南迁岭南，中原汉语与古越语交融碰撞，粤西方言雏形初步形成，奠定了方言的语音基础。彼时合浦郡为海上丝路要冲，语言融合多地特色，保留诸多古越语原生词汇。</p>
+                    </div>
+                    <div class="yuexi-timeline-dot"></div>
+                </div>
+
+                <!-- 唐宋时期 - 增两行 -->
+                <div class="yuexi-timeline-item" data-period="唐宋融合 · 体系定型">
+                    <div class="yuexi-timeline-card">
+                        <h3>唐宋时期</h3>
+                        <p>大批中原移民南下避乱，粤西方言吸收中古汉语特征，声调与词汇体系基本定型，保留大量古汉语词汇。音韵体系愈发完善，九声六调的发音规则就此固化并代代相传。</p>
+                    </div>
+                    <div class="yuexi-timeline-dot"></div>
+                </div>
+
+                <!-- 明清时期 - 增两行 -->
+                <div class="yuexi-timeline-item" data-period="明清兴盛 · 文化繁荣">
+                    <div class="yuexi-timeline-card">
+                        <h3>明清时期</h3>
+                        <p>粤西商贸往来频繁，方言融合客家、闽南语特色，词汇不断丰富，成为承载本土文化的核心载体。山歌、木鱼歌等民间艺术皆以方言传唱，方言文化发展至鼎盛阶段。</p>
+                    </div>
+                    <div class="yuexi-timeline-dot"></div>
+                </div>
+
+                <!-- 近现代 - 增两行 -->
+                <div class="yuexi-timeline-item" data-period="近现代传承 · 薪火相传">
+                    <div class="yuexi-timeline-card">
+                        <h3>近现代</h3>
+                        <p>方言传承遇挑战，但本土文化觉醒推动保护行动，粤西方言的文化价值被重视，以多元形式焕发新生。数字化记录与文创传播并行，让古老乡音在新时代延续生命力。</p>
+                    </div>
+                    <div class="yuexi-timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 粤西方言历史详情弹窗 - 复用本站弹窗样式 无需改样式 -->
+    <div class="modal" id="yuexiHistoryModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeYuexiModal">&times;</span>
+            <h3 id="yuexiModalTitle">秦汉奠基 · 雏形初现</h3>
+            <p id="yuexiModalDesc">秦统一岭南后，徙民入粤带来中原雅言，与古越族语言交融，形成早期粤语雏形。汉代合浦郡为海上丝路要冲，语言受周边地域影响，逐渐形成有别于广府的粤西语音特色，部分古越语词汇被保留沿用。</p>
+        </div>
+    </div>
+    <!-- 在线学习中心 -->
+    <section id="courses" class="section bg-light">
+        <h2>📚 精选方言课程</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <img src="./images/tongyao.png" alt="童谣鉴赏">
+                <h3>广府童谣与俗语</h3>
+                <p>重温《落雨大》《月光光》等经典童谣，解析俗语背后的文化内涵和使用场景。</p>
+                <div class="course-meta">
+                    <span>讲师：待定</span>
+                    <span>级别：A2</span>
+                </div>
+                <button class="enroll-btn" onclick="window.open ('https://www.xiaohongshu.com/explore/6722f9f5000000001a01c891?app_platform=ios&app_version=9.17.2&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBEfsSAwc8N-udLnisjFfNYaiRRuFppzZNH_KKcCxI57Y=&author_share=1&xhsshare=WeixinSession&shareRedId=N0g5RTw2OTw4STw5OU0wNjY0Ojo2Szc5&apptime=1768561493&share_id=4568b99177b447a98f7576365f9d6f43', '_blank')">立即学习</button>
+            </div>
+            <div class="course-card">
+                <img src="./images/jiuyin.png" alt="AI正音">
+                <h3>AI 智能纠音实战</h3>
+                <p>利用AI技术实时评测发音准确度，针对性纠正声调、声母韵母错误，快速提升口语。</p>
+                <div class="course-meta">
+                    <span>难度：comming soon</span>
+                    <span>工具：comming soon</span>
+                </div>
+                <button class="enroll-btn">开始挑战</button>
+            </div>
+            <div class="course-card">
+                <img src="./images/rumen.png" alt="客家话入门">
+                <h3>客家话零基础入门</h3>
+                <p>学习客家话六声系统、核心词汇和日常对话，掌握"食朝""落水"等特色表达，配套发音示范。</p>
+                <div class="course-meta">
+                    <span>讲师：待定</span>
+                    <span>级别：A1</span>
+                </div>
+                <button class="enroll-btn" onclick="window.open('https://www.xiaohongshu.com/explore/67f91bb6000000001b024428?note_flow_source=wechat&xsec_token=CBt2arWykiFHwRFBqTDxSCcYKpPlLQOqXTTLOUWQ4M7UM=', '_blank')">立即学习</button>
+            </div>
+        </div>
+    </section>
+    <!-- 方言科普板块 -->
+    <section id="popularize" class="section bg-light">
+        <h2>📖 方言趣味科普</h2>
+        <div class="popularize-container">
+            <div class="popularize-card">
+                <h3>🌏 方言的"活化石"密码</h3>
+                <img src="./images/fangyan.png" alt="方言化石">
+                <p>中国方言是古汉语的"活化石"，很多方言词汇能追溯到唐宋时期。比如粤语的"食饭"，对应古汉语的"食"（吃），而客家话的"禾米"（大米），保留了古代农耕文明的词汇特征。</p>
+                <div class="fun-fact">
+                    <strong>趣味冷知识：</strong> 客家话中"毋"（m̀）表示"不"，和《论语》中的"毋意、毋必、毋固、毋我"完全一致，穿越千年仍在使用！
+                </div>
+                <p>方言不仅是语言，更是地域文化的基因，承载着民俗、传说和生活智慧。</p>
+            </div>
+            <div class="popularize-card">
+                <h3>🎶 方言声调大比拼</h3>
+                <img src="./images/shengdiao.png" alt="声调对比">
+                <p>不同方言的声调数量差异巨大，这也是方言发音的核心难点：</p>
+                <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+                    <li>普通话：4个声调（阴平、阳平、上声、去声）</li>
+                    <li>粤语：9个声调（九声六调）</li>
+                    <li>客家话：6个声调（平、上、去、入各分阴阳）</li>
+                    <li>吴语：5-7个声调（浊音丰富）</li>
+                </ul>
+                <div class="fun-fact">
+                    <strong>趣味挑战：</strong> 粤语"系"（是）有5种声调变化，对应不同语气，你能分清吗？来方言词典板块查查吧！
+                </div>
+            </div>
+            <div class="popularize-card">
+                <h3>🍜 方言里的美食密码</h3>
+                <img src="./images/meishi.png" alt="方言美食">
+                <p>各地美食的方言叫法充满地域特色，藏着独特的饮食文化：</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                    <div>
+                        <strong>粤语：</strong><br>
+                        饮茶 → 喝早茶<br>
+                        云吞 → 馄饨<br>
+                        叉烧 → 烤猪肉
+                    </div>
+                    <div>
+                        <strong>客家话：</strong><br>
+                        食朝 → 吃午饭<br>
+                        酿豆腐 → 豆腐包肉<br>
+                        粄 → 米糕类食品
+                    </div>
+                    <div>
+                        <strong>川渝话：</strong><br>
+                        抄手 → 馄饨<br>
+                        火锅 → 麻辣火锅<br>
+                        冰粉 → 凉粉甜品
+                    </div>
+                    <div>
+                        <strong>吴语：</strong><br>
+                        生煎馒头 → 生煎包<br>
+                        粢饭团 → 糯米团<br>
+                        阳春面 → 清汤面
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 互动与游戏 -->
+    <section id="games" class="section">
+        <h2>🎮 寓教于乐</h2>
+        <div class="game-container">
+            <!-- 互动方言词典 -->
+            <div class="ai-box">
+                <h3>📚 互动方言词典</h3>
+                <div class="dictionary-section">
+                    <div class="dict-layout">
+                        <div class="dict-panel">
+                            <div class="dict-header">
+                                <h4 class="dict-title">广粤方言词汇查询</h4>
+                            </div>
+                            <div class="dict-controls">
+                                <div class="dict-search">
+                                    <input type="text" id="dialectSearchInput" placeholder="输入词汇/拼音/释义查询">
+                                    <span>🔍</span>
+                                </div>
+                                <select class="dict-select" id="dialectTypeSelect">
+                                    <option value="all">全部方言</option>
+                                    <option value="yuexi">粤西方言</option>
+                                    <option value="cantonese">粤语</option>
+                                    <option value="hakka">客家话</option>
+                                    <option value="minnan">闽南话</option>
+                                </select>
+                                <label class="dict-toggle-small">
+                                    <input type="checkbox" id="showOnlyFav"> 仅看收藏
+                                </label>
+                            </div>
+                            <div class="dict-virtual-container">
+                                <div class="dict-virtual-inner" id="dictWordsList">
+                                    <div class="dict-item" data-id="1" data-type="yuexi">
+                                        <div class="dict-word-main">
+                                            <div class="dict-word">㓥猪</div>
+                                            <div class="dict-ipa">[tāng zyu]</div>
+                                            <span class="dict-meta-badge">粤西</span>
+                                        </div>
+                                        <div>
+                                            <div class="dict-meaning">释义：杀猪，粤西地区日常用语，常用于农村集市场景</div>
+                                            <div class="dict-example">例句：今日圩日，村头有人㓥猪卖肉。</div>
+                                        </div>
+                                        <div class="dict-actions">
+                                            <button class="dict-audio-btn">
+                                                <span>🔊</span> 播放发音
+                                            </button>
+                                            <button class="dict-fav-btn">
+                                                <span>⭐</span> 收藏
+                                            </button>
+                                            <div class="dict-feedback-row">
+                                                <button class="dict-feedback-btn">👍 准确</button>
+                                                <button class="dict-feedback-btn">👎 修正</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dict-item" data-id="2" data-type="yuexi">
+                                        <div class="dict-word-main">
+                                            <div class="dict-word">睇牛</div>
+                                            <div class="dict-ipa">[tái ngù]</div>
+                                            <span class="dict-meta-badge">粤西</span>
+                                        </div>
+                                        <div>
+                                            <div class="dict-meaning">释义：放牛，粤西乡村特色表达，指放养牛只</div>
+                                            <div class="dict-example">例句：细侬时成日去山岗睇牛，好开心。</div>
+                                        </div>
+                                        <div class="dict-actions">
+                                            <button class="dict-audio-btn">
+                                                <span>🔊</span> 播放发音
+                                            </button>
+                                            <button class="dict-fav-btn">
+                                                <span>⭐</span> 收藏
+                                            </button>
+                                            <div class="dict-feedback-row">
+                                                <button class="dict-feedback-btn">👍 准确</button>
+                                                <button class="dict-feedback-btn">👎 修正</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dict-item" data-id="3" data-type="cantonese">
+                                        <div class="dict-word-main">
+                                            <div class="dict-word">食饭</div>
+                                            <div class="dict-ipa">[sik6 faan6]</div>
+                                            <span class="dict-meta-badge">粤语</span>
+                                        </div>
+                                        <div>
+                                            <div class="dict-meaning">释义：吃饭，粤语核心日常用语，保留古汉语"食"的用法</div>
+                                            <div class="dict-example">例句：你食咗饭未啊？（你吃饭了吗？）</div>
+                                        </div>
+                                        <div class="dict-actions">
+                                            <button class="dict-audio-btn">
+                                                <span>🔊</span> 播放发音
+                                            </button>
+                                            <button class="dict-fav-btn">
+                                                <span>⭐</span> 收藏
+                                            </button>
+                                            <div class="dict-feedback-row">
+                                                <button class="dict-feedback-btn">👍 准确</button>
+                                                <button class="dict-feedback-btn">👎 修正</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dict-item" data-id="4" data-type="hakka">
+                                        <div class="dict-word-main">
+                                            <div class="dict-word">食朝</div>
+                                            <div class="dict-ipa">[sít tshàu]</div>
+                                            <span class="dict-meta-badge">客家话</span>
+                                        </div>
+                                        <div>
+                                            <div class="dict-meaning">释义：吃午饭，客家话特色表达，"朝"指午时</div>
+                                            <div class="dict-example">例句：食朝冇？冇就一齐食。（吃午饭了吗？没的话一起吃。）</div>
+                                        </div>
+                                        <div class="dict-actions">
+                                            <button class="dict-audio-btn">
+                                                <span>🔊</span> 播放发音
+                                            </button>
+                                            <button class="dict-fav-btn">
+                                                <span>⭐</span> 收藏
+                                            </button>
+                                            <div class="dict-feedback-row">
+                                                <button class="dict-feedback-btn">👍 准确</button>
+                                                <button class="dict-feedback-btn">👎 修正</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dict-item" data-id="5" data-type="yuexi">
+                                        <div class="dict-word-main">
+                                            <div class="dict-word">趁圩</div>
+                                            <div class="dict-ipa">[can4 hui1]</div>
+                                            <span>粤西</span>
+                                        </div>
+                                        <div>
+                                            <div class="dict-meaning">释义：赶集，粤西地区对去乡镇集市的特有说法</div>
+                                            <div class="dict-example">例句：每月逢三六九，大家都去镇上趁圩。</div>
+                                        </div>
+                                        <div class="dict-actions">
+                                            <button class="dict-audio-btn">
+                                                <span>🔊</span> 播放发音
+                                            </button>
+                                            <button class="dict-fav-btn">
+                                                <span>⭐</span> 收藏
+                                            </button>
+                                            <div class="dict-feedback-row">
+                                                <button class="dict-feedback-btn">👍 准确</button>
+                                                <button class="dict-feedback-btn">👎 修正</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dict-panel">
+                            <h4 class="dict-side-title">我的收藏</h4>
+                            <div class="dict-fav-list" id="favWordsList">
+                                <div class="dict-empty">暂无收藏词汇，点击⭐添加</div>
+                            </div>
+                            
+                            <h4 class="dict-side-title" style="margin-top: 1rem;">补充词汇</h4>
+                            <form class="dict-form" id="addDialectForm">
+                                <input type="text" placeholder="方言词汇" required>
+                                <input type="text" placeholder="拼音/IPA" required>
+                                <select class="dict-select" style="grid-column: 1 / -1;">
+                                    <option value="yuexi">粤西方言</option>
+                                    <option value="cantonese">粤语</option>
+                                    <option value="hakka">客家话</option>
+                                </select>
+                                <textarea rows="2" placeholder="释义（必填）" required></textarea>
+                                <textarea rows="2" placeholder="例句（选填）"></textarea>
+                                <small>所有补充内容将审核后上线</small>
+                                <button type="submit" class="dict-submit-btn">提交补充</button>
+                            </form>
+                            
+                            <div class="dict-badge-row">
+                                <span>📊 已收录词汇：286</span>
+                                <span>📍 粤西方言：128</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 客家字词发音闯关 -->
+            <div class="hakka-game-box">
+                <h3>🔤 客家字词发音闯关</h3>
+                <p>选出下列客家话词汇的正确普通话含义，答对加分哦！</p>
+                <div class="hakka-word-container">
+                    <div class="hakka-word" id="hakkaWord">食朝</div>
+                    <div class="pronunciation" id="hakkaPronunciation">[sít tshàu]</div>
+                    <div class="options" id="options">
+                        <button class="option-btn" data-correct="false">A. 吃晚饭</button>
+                        <button class="option-btn" data-correct="true">B. 吃午饭</button>
+                        <button class="option-btn" data-correct="false">C. 早上起床</button>
+                        <button class="option-btn" data-correct="false">D. 做早餐</button>
+                    </div>
+                    <div class="game-feedback" id="gameFeedback"></div>
+                    <button class="next-word-btn" id="nextWordBtn">下一题 →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 团队产品展示 -->
+    <section id="product" class="section">
+        <h2>💡 方言文创产品专区</h2>
+        <div class="product-container">
+            <div class="product-img">
+                <img src="./images/beijing2.jpg" alt="方言文创产品">
+            </div>
+            <div class="product-info">
+                <h3>乡音集 · 方言文创系列</h3>
+                <p>聚焦方言文化传承与创新，打造兼具实用性与文化性的方言文创产品矩阵，将各地乡音融入日常物件，让方言文化可触、可感、可收藏。</p>
+                <ul class="product-features">
+                    <li>方言主题周边：涵盖方言字帖、创意书签、文化帆布包等轻文创</li>
+                    <li>数字文创产品：方言语音包、动态表情包、文化主题壁纸等</li>
+                    <li>地域文化礼盒：结合方言元素与地方非遗的定制化文创套装</li>
+                    <li>文创定制服务：为企业/机构打造专属方言文化主题文创方案</li>
+                </ul>
+                <p>所有文创产品均围绕「守护乡音、传承文化」核心理念设计，既保留方言的原生魅力，又贴合现代生活审美，让方言文化以更鲜活的形式走进大众视野。</p>
+            </div>
+        </div>
+    </section>
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>🗣️ 粤韵乡音 · 中华方言荟</p>
+        <p>守护乡音，传承中华优秀传统文化</p>
+        <p class="copyright">© 2025 粤韵乡音 版权所有</p>
+    </footer>
+
+    <!-- 方言详情弹窗 -->
+    <div class="modal" id="dialectModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h3 id="modalTitle">粤语 · 广东</h3>
+            <p id="modalDesc">粤语，又称广东话、广府话，属汉藏语系汉语族粤语支，是广东省主流方言之一，也是海外华人社区最常用的方言之一。粤语保留了大量古汉语特征，拥有九声六调，词汇丰富，文化底蕴深厚。</p>
+            <div class="dialect-example">
+                <h4>常用词汇示例</h4>
+                <p><strong>食饭</strong> - 吃饭</p>
+                <p><strong>饮茶</strong> - 喝早茶</p>
+                <p><strong>落雨</strong> - 下雨</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        
+            // 方言弹窗逻辑
+            const regionTags = document.querySelectorAll('.region-tag');
+            const modal = document.getElementById('dialectModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+
+        // 方言数据 - 新增【闽南语】【晋语】完整数据
+        const dialectData = {
+            '粤语': {
+                title: '粤语 · 广东',
+                desc: '粤语，又称广东话、广府话，属汉藏语系汉语族粤语支，是广东省主流方言之一，也是海外华人社区最常用的方言之一。粤语保留了大量古汉语特征，拥有九声六调，词汇丰富，文化底蕴深厚。',
+                examples: [
+                    '食饭 - 吃饭',
+                    '饮茶 - 喝早茶',
+                    '落雨 - 下雨'
+                ]
+            },
+            '吴语': {
+                title: '吴语 · 江浙',
+                desc: '吴语又称江浙话、江南话，主要分布在江苏南部、浙江大部、上海等地，是汉语七大方言之一。吴语保留了中古汉语的浊音系统，声调多达7个，语音柔和，具有独特的地域文化魅力。',
+                examples: [
+                    '侬 - 你',
+                    '汏衣裳 - 洗衣服',
+                    '辰光 - 时间'
+                ]
+            },
+            '川渝话': {
+                title: '川渝话 · 四川',
+                desc: '川渝话属西南官话分支，主要通行于四川、重庆及周边地区，语音简洁，词汇生动，兼具幽默与豪放的特点，是西南地区最具代表性的方言。',
+                examples: [
+                    '啥子 - 什么',
+                    '巴适 - 舒服、好',
+                    '抄手 - 馄饨'
+                ]
+            },
+            '山东话': {
+                title: '山东话 · 山东',
+                desc: '山东话属北方官话，分为冀鲁官话、胶辽官话、中原官话三大片区，语音浑厚，词汇朴实，保留了大量北方方言的特色，是北方方言的重要代表。',
+                examples: [
+                    '俺 - 我',
+                    '杠赛来 - 非常好',
+                    '拉呱 - 聊天'
+                ]
+            },
+            '湖南话': {
+                title: '湖南话 · 湖南',
+                desc: '湖南话又称湘语，主要分布在湖南省大部分地区，属汉藏语系汉语族，声调复杂，词汇极具地域特色，是湖湘文化的重要载体。',
+                examples: [
+                    '呷饭 - 吃饭',
+                    '何解 - 为什么',
+                    '嬲塞 - 厉害、棒'
+                ]
+            },
+            '客家话': {
+                title: '客家话 · 桂粤闽',
+                desc: '客家话属汉藏语系汉语族，主要分布在广东、广西、福建、江西等客家聚居区，保留了大量中古汉语特征，有六声调系统，是客家文化的核心标识。',
+                examples: [
+                    '食朝 - 吃午饭',
+                    '落水 - 下雨',
+                    '毋 - 不'
+                ]
+            },
+            '闽南语': {
+                title: '闽南语 · 福建',
+                desc: '闽南语，又称福佬话、河洛话，属汉藏语系汉语族闽语支，主要通行于福建闽南、台湾、潮汕及东南亚闽南籍华人社区。闽南语保留了大量上古汉语特征，拥有7个声调，是汉语中历史最悠久的方言之一，也是两岸文化相通的重要纽带。',
+                examples: [
+                    '食糜 - 喝粥',
+                    '汝 - 你',
+                    '透风 - 吹风'
+                ]
+            },
+            '晋语': {
+                title: '晋语 · 山西',
+                desc: '晋语属汉藏语系汉语族，主要分布在山西大部、陕北、内蒙古西部等地区，是北方唯一保留入声的方言，拥有5-6个声调，语音铿锵有力，词汇古朴，充满黄土高原的豪迈气息，是北方方言中极具特色的一支。',
+                examples: [
+                    '俺们 - 我们',
+                    '咋咧 - 怎么了',
+                    '待见 - 喜欢、待见'
+                ]
+            },
+            '藏语': {
+                title: '藏语 · 西藏',
+                desc: '藏语属汉藏语系藏缅语族藏语支，是藏族的通用语言，主要通行于西藏自治区及青海、四川、甘肃、云南等藏族聚居区，有卫藏、康巴、安多三大方言区。藏语拥有独立的藏文字母书写体系，语音优美厚重，是藏族文化、宗教、史诗的核心载体，承载着雪域高原的千年文明。',
+                examples: [
+                    'ལག་ལེན - 谢谢',
+                    'ཁམས་སུམ - 你好',
+                    'ང་ - 我'
+                ]
+            },
+            '维吾尔语': {
+                title: '维吾尔语 · 新疆',
+                desc: '维吾尔语属阿尔泰语系突厥语族，是维吾尔族的母语，主要通行于新疆维吾尔自治区，拥有独特的回鹘式文字书写体系。维吾尔语语音婉转悠扬，词汇丰富且多外来语融合，兼具草原游牧文化与西域丝路文化特色，是新疆多元文化交融的重要语言标志。',
+                examples: [
+                    'ياخشىمۇسىز - 你好',
+                    'رەھمەت - 谢谢',
+                    'مەنمۇ - 我也是'
+                ]
+            }
+        };
+
+            // 点击标签打开弹窗
+            regionTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const dialect = this.getAttribute('data-dialect');
+                    const data = dialectData[dialect];
+                    
+                    modalTitle.textContent = data.title;
+                    modalDesc.textContent = data.desc;
+            
+            // 清空原有示例，添加新示例
+            let exampleHtml = '';
+            data.examples.forEach(example => {
+                exampleHtml += `<p><strong>${example.split(' - ')[0]}</strong> - ${example.split(' - ')[1]}</p>`;
+            });
+            document.querySelector('.dialect-example').innerHTML = `<h4>常用词汇示例</h4>${exampleHtml}`;
+            
+            modal.style.display = 'flex';
+        });
+    });
+
+            // 关闭弹窗
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            // 点击弹窗外部关闭
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            // 移动端菜单
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navMenu = document.querySelector('.nav-menu');
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+
+                        // 客家话闯关游戏 【升级：12题完整版 + 随机抽5题不重复】逻辑
+            const optionBtns = document.querySelectorAll('.option-btn');
+            const nextWordBtn = document.getElementById('nextWordBtn');
+            const gameFeedback = document.getElementById('gameFeedback');
+            const hakkaWord = document.getElementById('hakkaWord');
+            const hakkaPronunciation = document.getElementById('hakkaPronunciation');
+            const optionsBox = document.getElementById('options');
+            let score = 0;
+            let currentQuestion = 0;
+            let randomQuestions = []; // 存储随机抽取的5道题
+
+            // ✅ 扩充至12道客家话完整题库（地道词汇+精准发音+易错选项）
+            const hakkaQuestions = [
+                {
+                    word: "食朝",
+                    pronounce: "[sít tshàu]",
+                    options: [
+                        {text: "A. 吃晚饭", correct: false},
+                        {text: "B. 吃午饭", correct: true},
+                        {text: "C. 早上起床", correct: false},
+                        {text: "D. 做早餐", correct: false}
+                    ]
+                },
+                {
+                    word: "落水",
+                    pronounce: "[lɔk súi]",
+                    options: [
+                        {text: "A. 掉水里了", correct: false},
+                        {text: "B. 下雨", correct: true},
+                        {text: "C. 喝水", correct: false},
+                        {text: "D. 跳水", correct: false}
+                    ]
+                },
+                {
+                    word: "毋好",
+                    pronounce: "[m̀ hǎu]",
+                    options: [
+                        {text: "A. 不好、不要", correct: true},
+                        {text: "B. 很好", correct: false},
+                        {text: "C. 不能", correct: false},
+                        {text: "D. 快点", correct: false}
+                    ]
+                },
+                {
+                    word: "粄子",
+                    pronounce: "[bán zṳ́]",
+                    options: [
+                        {text: "A. 木板", correct: false},
+                        {text: "B. 米糕", correct: true},
+                        {text: "C. 凳子", correct: false},
+                        {text: "D. 筷子", correct: false}
+                    ]
+                },
+                {
+                    word: "转屋卡",
+                    pronounce: "[driàn vû kā]",
+                    options: [
+                        {text: "A. 回家里", correct: true},
+                        {text: "B. 转圈圈", correct: false},
+                        {text: "C. 去逛街", correct: false},
+                        {text: "D. 做农活", correct: false}
+                    ]
+                },
+                {
+                    word: "食夜",
+                    pronounce: "[sít yè]",
+                    options: [
+                        {text: "A. 吃宵夜", correct: false},
+                        {text: "B. 吃晚饭", correct: true},
+                        {text: "C. 熬夜", correct: false},
+                        {text: "D. 吃零食", correct: false}
+                    ]
+                },
+                {
+                    word: "阿哥",
+                    pronounce: "[â gō]",
+                    options: [
+                        {text: "A. 舅舅", correct: false},
+                        {text: "B. 哥哥", correct: true},
+                        {text: "C. 爸爸", correct: false},
+                        {text: "D. 爷爷", correct: false}
+                    ]
+                },
+                {
+                    word: "妹仔",
+                    pronounce: "[mùi zái]",
+                    options: [
+                        {text: "A. 妹妹/姑娘", correct: true},
+                        {text: "B. 妈妈", correct: false},
+                        {text: "C. 阿姨", correct: false},
+                        {text: "D. 女儿", correct: false}
+                    ]
+                },
+                {
+                    word: "讲事",
+                    pronounce: "[gǒng sṳ̀]",
+                    options: [
+                        {text: "A. 讲故事", correct: false},
+                        {text: "B. 说话/聊天", correct: true},
+                        {text: "C. 讲道理", correct: false},
+                        {text: "D. 吵架", correct: false}
+                    ]
+                },
+                {
+                    word: "天光",
+                    pronounce: "[tiān gōng]",
+                    options: [
+                        {text: "A. 天亮/早晨", correct: true},
+                        {text: "B. 天空", correct: false},
+                        {text: "C. 阳光", correct: false},
+                        {text: "D. 白天", correct: false}
+                    ]
+                },
+                {
+                    word: "行路",
+                    pronounce: "[háng lu]",
+                    options: [
+                        {text: "A. 走路/散步", correct: true},
+                        {text: "B. 开车", correct: false},
+                        {text: "C. 赶路", correct: false},
+                        {text: "D. 跑步", correct: false}
+                    ]
+                },
+                {
+                    word: "睇电视",
+                    pronounce: "[tái diàn sṳ̀]",
+                    options: [
+                        {text: "A. 修电视", correct: false},
+                        {text: "B. 看电视", correct: true},
+                        {text: "C. 买电视", correct: false},
+                        {text: "D. 擦电视", correct: false}
+                    ]
+                }
+            ];
+
+            // ✅ 核心新增：随机抽取5道不重复的题目
+            function getRandomQuestions() {
+                const shuffled = [...hakkaQuestions].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, 5);
+            }
+
+            // 加载题目
+            function loadQuestion(index) {
+                const q = randomQuestions[index];
+                hakkaWord.textContent = q.word;
+                hakkaPronunciation.textContent = q.pronounce;
+                optionsBox.innerHTML = '';
+                q.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opt.text;
+                    btn.dataset.correct = opt.correct;
+                    optionsBox.appendChild(btn);
+                });
+                gameFeedback.textContent = '';
+                gameFeedback.style.color = '';
+                nextWordBtn.style.display = 'none';
+                bindOptionEvents();
+            }
+
+            // 绑定选项点击事件
+            function bindOptionEvents() {
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const isCorrect = this.dataset.correct === 'true';
+                        document.querySelectorAll('.option-btn').forEach(b => {
+                            if(b.dataset.correct === 'true') b.classList.add('correct');
+                            else b.classList.add('incorrect');
+                            b.disabled = true;
+                        });
+                        if(isCorrect) {
+                            score += 20;
+                            gameFeedback.textContent = '✅ 回答正确！+20积分';
+                            gameFeedback.style.color = '#155724';
+                        } else {
+                            gameFeedback.textContent = '❌ 回答错误，再接再厉！';
+                            gameFeedback.style.color = '#721c24';
+                        }
+                        if(currentQuestion < randomQuestions.length - 1) {
+                            nextWordBtn.style.display = 'block';
+                        } else {
+                            gameFeedback.textContent += ` 闯关完成！总积分：${score}分`;
+                        }
+                    });
+                });
+            }
+
+            // 下一题按钮
+            nextWordBtn.addEventListener('click', function() {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+            });
+
+            // ✅ 初始化：获取随机5题 + 加载第一道题
+            randomQuestions = getRandomQuestions();
+            loadQuestion(0);
+            // 收藏功能逻辑
+            const favBtns = document.querySelectorAll('.dict-fav-btn');
+            const favWordsList = document.getElementById('favWordsList');
+            const showOnlyFav = document.getElementById('showOnlyFav');
+            const dictItems = document.querySelectorAll('.dict-item');
+            let favIds = [];
+
+            // 收藏按钮点击事件
+            favBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    const item = this.closest('.dict-item');
+                    const id = item.dataset.id;
+                    const word = item.querySelector('.dict-word').textContent;
+
+                    if(this.classList.contains('active')) {
+                        favIds.push(id);
+                        addFavItem(word, id);
+                    } else {
+                        favIds = favIds.filter(fid => fid !== id);
+                        removeFavItem(id);
+                    }
+                    filterDictItems();
+                });
+            });
+
+            // 添加收藏项
+            function addFavItem(word, id) {
+                if(favWordsList.querySelector('.dict-empty')) favWordsList.innerHTML = '';
+                const favItem = document.createElement('div');
+                favItem.className = 'dict-fav-item';
+                favItem.dataset.id = id;
+                favItem.innerHTML = `<span>${word}</span><button class="dict-fav-remove">×</button>`;
+                favWordsList.appendChild(favItem);
+                
+                // 删除收藏
+                favItem.querySelector('.dict-fav-remove').addEventListener('click', function() {
+                    const id = this.closest('.dict-fav-item').dataset.id;
+                    favIds = favIds.filter(fid => fid !== id);
+                    this.closest('.dict-fav-item').remove();
+                    const btn = document.querySelector(`.dict-item[data-id="${id}"] .dict-fav-btn`);
+                    btn.classList.remove('active');
+                    if(favWordsList.children.length === 0) {
+                        favWordsList.innerHTML = '<div class="dict-empty">暂无收藏词汇，点击⭐添加</div>';
+                    }
+                    filterDictItems();
+                });
+            }
+
+            // 删除收藏项
+            function removeFavItem(id) {
+                const item = favWordsList.querySelector(`.dict-fav-item[data-id="${id}"]`);
+                if(item) item.remove();
+                if(favWordsList.children.length === 0) {
+                    favWordsList.innerHTML = '<div class="dict-empty">暂无收藏词汇，点击⭐添加</div>';
+                }
+            }
+
+            // 筛选词典内容
+            function filterDictItems() {
+                const dialectType = document.getElementById('dialectTypeSelect').value;
+                const searchVal = document.getElementById('dialectSearchInput').value.toLowerCase();
+                const onlyFav = showOnlyFav.checked;
+
+                dictItems.forEach(item => {
+                    const id = item.dataset.id;
+                    const type = item.dataset.type;
+                    const word = item.querySelector('.dict-word').textContent.toLowerCase();
+                    const meaning = item.querySelector('.dict-meaning').textContent.toLowerCase();
+                    const ipa = item.querySelector('.dict-ipa').textContent.toLowerCase();
+
+                    const matchType = dialectType === 'all' || type === dialectType;
+                    const matchSearch = searchVal === '' || word.includes(searchVal) || meaning.includes(searchVal) || ipa.includes(searchVal);
+                    const matchFav = !onlyFav || favIds.includes(id);
+
+                    item.style.display = (matchType && matchSearch && matchFav) ? 'grid' : 'none';
+                });
+            }
+
+            // 绑定筛选事件
+            document.getElementById('dialectTypeSelect').addEventListener('change', filterDictItems);
+            document.getElementById('dialectSearchInput').addEventListener('input', filterDictItems);
+            showOnlyFav.addEventListener('change', filterDictItems);
+
+            // 补充词汇表单提交
+            document.getElementById('addDialectForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('词汇补充提交成功，审核后将上线展示！');
+                this.reset();
+            });
+
+            // 播放发音按钮效果
+            document.querySelectorAll('.dict-audio-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    alert('发音播放功能，演示版暂未接入音频库～');
+                });
+            });
+            // 统计导航栏各板块点击量（百度统计专属）
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+            const pageName = this.getAttribute('href');
+            if(typeof _hmt !== 'undefined'){
+                _hmt.push(['_trackPageview', pageName]);
+                }   
+                });
+            });
+            // 导航栏平滑滚动跳转功能
+            const navAnchor = document.querySelectorAll('.nav-menu a[href^="#"]');
+            navAnchor.forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                        navMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            // 首页搜索框 站内板块搜索+平滑跳转 核心功能
+            const heroSearchInput = document.getElementById('heroSearchInput');
+            const heroSearchBtn = document.getElementById('heroSearchBtn');
+            const searchMap = {
+                '首页': '#home',
+                '课程': '#courses', '学习': '#courses', '在线学习': '#courses', '童谣': '#courses', '纠音': '#courses', '客家话入门': '#courses',
+                '地图': '#map', '方言地图': '#map', '方言': '#map', '广东': '#map', '客家': '#map', '吴语': '#map', '川渝': '#map', '闽南': '#map', '山西': '#map',
+                '科普': '#popularize', '趣味科普': '#popularize', '文化': '#popularize', '声调': '#popularize', '美食': '#popularize', '活化石': '#popularize',
+                '互动': '#games', '游戏': '#games', '闯关': '#games', '词典': '#games', '客家话': '#games', '发音': '#games',
+                '产品': '#product', '文创': '#product', '团队产品': '#product', '周边': '#product'
+            };
+            function doSearch() {
+                const searchVal = heroSearchInput.value.trim().toLowerCase();
+                if(!searchVal) return alert('请输入搜索关键词');
+                let targetHash = '';
+                for(const [key, val] of Object.entries(searchMap)) {
+                    if(searchVal.includes(key.toLowerCase())) {
+                        targetHash = val;
+                        break;
+                    }
+                }
+                if(targetHash) {
+                    const targetElement = document.querySelector(targetHash);
+                    window.scrollTo({
+                        top: targetElement.offsetTop -70,
+                        behavior: 'smooth'
+                    });
+                    heroSearchInput.value = '';
+                } else {
+                    alert(`未找到与「${searchVal}」相关的板块，可尝试搜索：课程、地图、科普、互动、产品`);
+                }
+            }
+            heroSearchBtn.addEventListener('click', doSearch);
+            heroSearchInput.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') doSearch();
+            });
+
+        });
+    </script>
+    <script>
+    // 粤西方言时间轴弹窗逻辑
+           // ===== 粤西方言历史弹窗交互 - 开始 =====
+        const timelineItems = document.querySelectorAll('.yuexi-timeline-item');
+        const yuexiModal = document.getElementById('yuexiHistoryModal');
+        const closeYuexiModal = document.getElementById('closeYuexiModal');
+        const yuexiModalTitle = document.getElementById('yuexiModalTitle');
+        const yuexiModalDesc = document.getElementById('yuexiModalDesc');
+
+        // 粤西方言历史详情完整内容
+        const yuexiHistoryData = {
+            '秦汉奠基 · 雏形初现': `秦统一岭南后，徙民入粤带来中原雅言，与古越族语言交融，形成早期粤语雏形。汉代合浦郡（今粤西部分区域）为海上丝绸之路重要节点，语言受交趾、闽南等地影响，逐渐形成有别于广府片区的粤西语音特色。这一时期，中原汉语的语法结构与古越语的语音、词汇结合，奠定了粤西方言的底层基础，部分古越语词汇如「㓥」「冇」被保留沿用至今。`,
+            '唐宋融合 · 体系定型': `唐宋时期，中原战乱频发，大批汉人南迁粤西定居，带来成熟的中古汉语体系，粤西方言在此阶段完成语音与词汇的定型。方言中保留了完整的入声韵尾和九声六调的声调系统，比现代广州话更贴近中古汉语。同时，「趁圩」「睇牛」等极具农耕特色的词汇开始盛行，成为粤西乡村生活的语言印记，方言的文化属性逐步凸显。`,
+            '明清兴盛 · 文化繁荣': `明清两代，粤西沿海商贸与内陆农耕并举，与广府、客家、闽南族群交流密切，粤西方言融合多地语言特色，形成「同片不同调、同乡不同音」的地域特点。茂名、湛江、阳江片区的方言出现细微分化，但核心语音体系不变。这一时期，粤西山歌、木鱼歌、木偶戏等民间艺术均以方言为载体创作传播，方言成为本土文化不可或缺的核心组成部分，影响力辐射周边地区。`,
+            '近现代传承 · 薪火相传': `近现代以来，随着普通话的普及与城镇化发展，粤西方言的日常使用场景有所收缩，年轻一代的方言使用率逐渐降低，方言传承面临断层挑战。但近年来，本土文化觉醒推动方言保护行动兴起：各地整理编撰《粤西方言词典》，中小学开设方言文化校本课程，数字化语音库建设启动，短视频、方言文创等新形式让粤西方言重新走进大众视野。粤西方言不仅是交流工具，更是粤西人身份认同的标志，承载着冼夫人文化、海洋丝路文化的珍贵记忆，其保护与传承，正是岭南文化多样性的最好守护。`
+        };
+
+        // 点击时间轴卡片打开弹窗
+        timelineItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const period = this.getAttribute('data-period');
+                yuexiModalTitle.textContent = period;
+                yuexiModalDesc.textContent = yuexiHistoryData[period];
+                yuexiModal.style.display = 'flex';
+            });
+        });
+
+        // 关闭弹窗
+        closeYuexiModal.addEventListener('click', function() {
+            yuexiModal.style.display = 'none';
+        });
+        window.addEventListener('click', function(e) {
+            if (e.target === yuexiModal) {
+                yuexiModal.style.display = 'none';
+            }
+        });
+        // ===== 粤西方言历史弹窗交互 - 结束 =====
+    </script>
+</body>
+</html>
