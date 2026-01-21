@@ -1126,6 +1126,101 @@
             object-fit: contain;
             background: #000;
         }
+
+        /* ========== 方言文创6图布局样式 ========== */
+        .product-grid {
+            display: grid;
+            /* 核心：大屏3列（上三下三），自动适配 */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            /* 同步页面滚动动画 */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--animate-duration) ease-out 0.3s, transform var(--animate-duration) ease-out 0.3s;
+        }
+        /* 滚动到板块时触发动画 */
+        .section.animate-in .product-grid {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* 单个产品卡片样式 */
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%; /* 保证卡片高度一致 */
+        }
+        /* 卡片悬浮效果 */
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        /* 产品图片容器（固定高度，防止图片变形） */
+        .product-card .product-img {
+            width: 100%;
+            height: 220px; /* 统一图片高度 */
+            overflow: hidden;
+        }
+        /* 图片自适应 */
+        .product-card .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 裁剪居中，保证图片不变形 */
+            transition: transform 0.5s ease;
+        }
+        /* 悬浮时图片放大 */
+        .product-card:hover .product-img img {
+            transform: scale(1.08);
+        }
+        /* 产品介绍文字区 */
+        .product-desc {
+            padding: 1.5rem;
+        }
+        .product-desc h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .product-desc p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ========== 响应式适配（与页面整体风格统一） ========== */
+        /* 平板：2列布局 */
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            .product-card .product-img {
+                height: 200px;
+            }
+        }
+        /* 手机：1列布局 */
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .product-card .product-img {
+                height: 180px;
+            }
+            .product-desc {
+                padding: 1.2rem;
+            }
+        }
+
+        /* ========== 移除原产品板块样式（避免冲突） ========== */
+        .product-container {
+            display: none !important;
+        }
     </style>
 
     <script>
@@ -1541,20 +1636,64 @@
     <section id="product" class="section">
         <div class="section-inner">
             <h2>💡 方言文创产品专区</h2>
-            <div class="product-container">
-                <div class="product-img">
-                    <img src="./images/beijing2.jpg" alt="方言文创产品">
+            <!-- 6张文创图：2张明信片+1张背面+钥匙扣+书包挂件+语音钥匙扣 → 上三下三布局 -->
+            <div class="product-grid">
+                <!-- 第一行：明信片1 + 明信片2 + 明信片背面 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/mingxinpian1.jpg" alt="方言明信片-粤韵乡音">
+                    </div>
+                    <div class="product-desc">
+                        <h4>廉江非遗戏曲明信片</h4>
+                        <p>正面是廉江粤剧、年例民俗插画，粤西话讲「呢张明信片够晒有本土味」（这张明信片超有本地特色）~ 写上「得闲返廉江睇年例」（有空回廉江看年例），用乡音寄给老友最有心意！</p>
+                    </div>
                 </div>
-                <div class="product-info">
-                    <h3>乡音集 · 方言文创系列</h3>
-                    <p>聚焦方言文化传承与创新，打造兼具实用性与文化性的方言文创产品矩阵，将各地乡音融入日常物件，让方言文化可触、可感、可收藏。</p>
-                    <ul class="product-features">
-                        <li>方言主题周边：涵盖方言字帖、创意书签、文化帆布包等轻文创</li>
-                        <li>数字文创产品：方言语音包、动态表情包、文化主题壁纸等</li>
-                        <li>地域文化礼盒：结合方言元素与地方非遗的定制化文创套装</li>
-                        <li>文创定制服务：为企业/机构打造专属方言文化主题文创方案</li>
-                    </ul>
-                    <p>所有文创产品均围绕「守护乡音、传承文化」核心理念设计，既保留方言的原生魅力，又贴合现代生活审美，让方言文化以更鲜活的形式走进大众视野。</p>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/mingxinpian2.jpg" alt="方言明信片-童谣插画">
+                    </div>
+                    <div class="product-desc">
+                        <h4>廉江古墟风情明信片</h4>
+                        <p>画着廉江古街、籺食（粤西特色小吃）的明信片，客家话叫「家乡风物卡」~ 背面留空写「食过廉江籺，先算返过屋卡」（吃过廉江籺，才算回过家），把乡愁印在纸上！</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/mingxinpian3.jpg" alt="明信片背面-方言书写区">
+                    </div>
+                    <div class="product-desc">
+                        <h4>方言专属明信片背面</h4>
+                        <p>特意留了「方言写字格」，粤西话叫「乡音留言区」~ 左边写「趁圩买嘅籺好食到爆」（赶集买的籺好吃到爆），右边注普通话翻译，让收信人秒懂你的本土浪漫！</p>
+                    </div>
+                </div>
+
+                <!-- 第二行：钥匙扣 + 书包挂件 + 语音钥匙扣 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/chanpin1.jpg" alt="方言金属钥匙扣">
+                    </div>
+                    <div class="product-desc">
+                        <h4>客家土楼立体钥匙扣</h4>
+                        <p>以客家围龙屋为原型的立体钥匙扣，还原土楼「圆寨」特色，挂在包上超吸睛～客家话叫「屋卡挂饰」，随身带着就像把家乡的烟火气揣在兜里，主打一个「抵锡」（粤语：可爱讨喜）！</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/chanpin2.jpg" alt="方言书包挂件">
+                    </div>
+                    <div class="product-desc">
+                        <h4>Q 版土楼拟人书包挂件</h4>
+                        <p>把客家土楼做成「萌萌仔」（粤西话：可爱小家伙）造型，圆滚滚的身子配笑脸，摸起来软乎乎～粤西话讲「呢只挂饰够晒得意」（这个挂饰太可爱啦），挂钥匙 / 书包都能让心情变靓！</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="./images/chanpin3.jpg" alt="方言语音钥匙扣">
+                    </div>
+                    <div class="product-desc">
+                        <h4>祥云莲花语音钥匙扣</h4>
+                        <p>浮雕工艺刻上岭南祥云、莲花纹样，粤西话叫「好意头挂饰」（寓意好的挂饰）~ 摸上去质感细腻，随身带就像把「顺顺利利」的祝福挂在身边，实用又有面儿！</p>
+                    </div>
                 </div>
             </div>
         </div>
