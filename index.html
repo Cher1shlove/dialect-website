@@ -1221,6 +1221,246 @@
         .product-container {
             display: none !important;
         }
+        
+        /* 粤西客家文旅活动板块样式 - 与页面风格统一 */
+        .hakka-tour-section {
+            padding: 5rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity var(--animate-duration) ease-out,transform var(--animate-duration) ease-out;
+        }
+        .hakka-tour-section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hakka-tour-inner {
+            background-color: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+        .hakka-tour-inner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .tour-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2.5rem;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        .tour-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .tour-card p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .tour-card ul {
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .tour-card li {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+        }
+        .tour-reserve-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--secondary-color), #ff8c42);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        .tour-reserve-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 107, 53, 0.4);
+            background: linear-gradient(135deg, #e55a2d, #ff7a2f);
+        }
+        /* 文旅预约弹窗专属样式 */
+        .tour-modal {
+            z-index: 9999;
+        }
+        .tour-modal .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            padding: 1rem;
+            overflow: auto;
+        }
+        .tour-modal .modal-img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 1rem 0;
+        }
+        /* 响应式适配 - 与页面其他板块一致 */
+        @media (max-width: 992px) {
+            .hakka-tour-inner h2 { font-size: 2.2rem; }
+            .tour-card h3 { font-size: 1.6rem; }
+            .hakka-tour-inner { padding: 2rem 1.5rem; }
+            .tour-card { padding: 2rem; }
+        }
+        @media (max-width: 768px) {
+            .hakka-tour-section { padding: 3rem 1.5rem 3rem; }
+            .hakka-tour-inner h2 { font-size: 1.8rem; }
+            .tour-card h3 { font-size: 1.4rem; }
+            .tour-reserve-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
+        }
+        @media (max-width: 576px) {
+            .tour-card { padding: 1.5rem; }
+            .tour-modal .modal-content { max-width: 95%; }
+        }
+
+        /* 粤西客家民谣音乐节板块样式 - 与页面风格统一 */
+        .folk-music-section {
+            padding: 5rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity var(--animate-duration) ease-out, transform var(--animate-duration) ease-out;
+        }
+        .folk-music-section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .folk-music-inner {
+            background-color: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+        .folk-music-inner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .music-card {
+            background: linear-gradient(10deg, rgba(255, 255, 255, 0.98), rgba(248, 245, 250, 0.98));
+            backdrop-filter: blur(5px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 3rem;
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            color: #333;
+            border-top: 4px solid var(--secondary-color);
+        }
+        .music-card h3 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-align: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .music-card .music-tag {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--secondary-color);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-right: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .music-card p {
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+        }
+        .music-card ul {
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .music-card li {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .music-card li::before {
+            content: '🎶';
+            margin-top: 0.3rem;
+        }
+        .music-detail-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), #2a76e8);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(26, 95, 180, 0.3);
+            display: block;
+            margin: 0 auto;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        .music-detail-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(26, 95, 180, 0.4);
+            background: linear-gradient(135deg, #154a8c, #2369d4);
+        }
+        /* 响应式适配 - 与页面其他板块一致 */
+        @media (max-width: 992px) {
+            .folk-music-inner h2 { font-size: 2.2rem; }
+            .music-card h3 { font-size: 1.8rem; }
+            .folk-music-inner { padding: 2rem 1.5rem; }
+            .music-card { padding: 2.5rem; }
+        }
+        @media (max-width: 768px) {
+            .folk-music-section { padding: 3rem 1.5rem 3rem; }
+            .folk-music-inner h2 { font-size: 1.8rem; }
+            .music-card h3 { font-size: 1.6rem; }
+            .music-detail-btn { padding: 0.8rem 2rem; font-size: 1rem; }
+            .music-card { padding: 2rem; }
+        }
+        @media (max-width: 576px) {
+            .music-card { padding: 1.5rem; }
+            .music-tag { display: block; margin-right: 0; }
+        }
     </style>
 
     <script>
@@ -1238,7 +1478,7 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
-            <h1 class="logo">🗣️ 粤韵乡音</h1>
+            <h1 class="logo">🗣️ 客家谣·数智承</h1>
             <div class="mobile-menu-btn">☰</div>
             <ul class="nav-menu">
                 <li><a href="#home">首页</a></li>
@@ -1637,6 +1877,7 @@
         <div class="section-inner">
             <h2>💡 方言文创产品专区</h2>
             <!-- 6张文创图：2张明信片+1张背面+钥匙扣+书包挂件+语音钥匙扣 → 上三下三布局 -->
+            <!-- 文创产品板块：6个卡片全部添加价格，以下是完整修改后代码 -->
             <div class="product-grid">
                 <!-- 第一行：明信片1 + 明信片2 + 明信片背面 -->
                 <div class="product-card">
@@ -1645,7 +1886,7 @@
                     </div>
                     <div class="product-desc">
                         <h4>廉江非遗戏曲明信片</h4>
-                        <p>正面是廉江粤剧、年例民俗插画，粤西话讲「呢张明信片够晒有本土味」（这张明信片超有本地特色）~ 写上「得闲返廉江睇年例」（有空回廉江看年例），用乡音寄给老友最有心意！</p>
+                        <p>正面是廉江粤剧、年例民俗插画，粤西话讲「呢张明信片够晒有本土味」（这张明信片超有本地特色）~ 写上「得闲返廉江睇年例」（有空回廉江看年例），用乡音寄给老友最有心意！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -1654,7 +1895,7 @@
                     </div>
                     <div class="product-desc">
                         <h4>廉江古墟风情明信片</h4>
-                        <p>画着廉江古街、籺食（粤西特色小吃）的明信片，客家话叫「家乡风物卡」~ 背面留空写「食过廉江籺，先算返过屋卡」（吃过廉江籺，才算回过家），把乡愁印在纸上！</p>
+                        <p>画着廉江古街、籺食（粤西特色小吃）的明信片，客家话叫「家乡风物卡」~ 背面留空写「食过廉江籺，先算返过屋卡」（吃过廉江籺，才算回过家），把乡愁印在纸上！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -1663,7 +1904,7 @@
                     </div>
                     <div class="product-desc">
                         <h4>方言专属明信片背面</h4>
-                        <p>特意留了「方言写字格」，粤西话叫「乡音留言区」~ 左边写「趁圩买嘅籺好食到爆」（赶集买的籺好吃到爆），右边注普通话翻译，让收信人秒懂你的本土浪漫！</p>
+                        <p>特意留了「方言写字格」，粤西话叫「乡音留言区」~ 左边写「趁圩买嘅籺好食到爆」（赶集买的籺好吃到爆），右边注普通话翻译，让收信人秒懂你的本土浪漫！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
 
@@ -1674,7 +1915,7 @@
                     </div>
                     <div class="product-desc">
                         <h4>客家土楼立体钥匙扣</h4>
-                        <p>以客家围龙屋为原型的立体钥匙扣，还原土楼「圆寨」特色，挂在包上超吸睛～客家话叫「屋卡挂饰」，随身带着就像把家乡的烟火气揣在兜里，主打一个「抵锡」（粤语：可爱讨喜）！</p>
+                        <p>以客家围龙屋为原型的立体钥匙扣，还原土楼「圆寨」特色，挂在包上超吸睛～客家话叫「屋卡挂饰」，随身带着就像把家乡的烟火气揣在兜里，主打一个「抵锡」（粤语：可爱讨喜）！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -1683,7 +1924,7 @@
                     </div>
                     <div class="product-desc">
                         <h4>Q 版土楼拟人书包挂件</h4>
-                        <p>把客家土楼做成「萌萌仔」（粤西话：可爱小家伙）造型，圆滚滚的身子配笑脸，摸起来软乎乎～粤西话讲「呢只挂饰够晒得意」（这个挂饰太可爱啦），挂钥匙 / 书包都能让心情变靓！</p>
+                        <p>把客家土楼做成「萌萌仔」（粤西话：可爱小家伙）造型，圆滚滚的身子配笑脸，摸起来软乎乎～粤西话讲「呢只挂饰够晒得意」（这个挂饰太可爱啦），挂钥匙 / 书包都能让心情变靓！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -1692,18 +1933,75 @@
                     </div>
                     <div class="product-desc">
                         <h4>祥云莲花语音钥匙扣</h4>
-                        <p>浮雕工艺刻上岭南祥云、莲花纹样，粤西话叫「好意头挂饰」（寓意好的挂饰）~ 摸上去质感细腻，随身带就像把「顺顺利利」的祝福挂在身边，实用又有面儿！</p>
+                        <p>浮雕工艺刻上岭南祥云、莲花纹样，粤西话叫「好意头挂饰」（寓意好的挂饰）~ 摸上去质感细腻，随身带就像把「顺顺利利」的祝福挂在身边，实用又有面儿！<br><strong>价格：30元/件</strong></p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     
+    <!-- 粤西客家文化村镇文旅活动板块 -->
+    <section id="tour" class="hakka-tour-section">
+        <div class="hakka-tour-inner">
+            <h2>🏮 粤西客家文化村镇文旅活动</h2>
+            <div class="tour-card">
+                <h3>📍 粤西客家文化体验之旅 · 精品村镇打卡</h3>
+                <p>粤西客家文化村镇散落着浓郁的客家风情，保留了完整的围龙屋建筑、客家民俗、非遗技艺，本次文旅活动带你走进粤西客家核心村镇，沉浸式体验客家文化魅力！</p>
+                <!-- 预约按钮 -->
+                <button class="tour-reserve-btn" id="tourReserveBtn">📩 立即预约文旅活动</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文旅活动预约弹窗 - 展示图片 -->
+    <div class="modal tour-modal" id="tourModal">
+        <div class="modal-content">
+            <span class="close-modal tour-close">&times;</span>
+            <h3>粤西客家文化村镇文旅活动 · 预约须知</h3>
+            <!-- 替换此处src为你的实际图片地址，支持jpg/png/webp格式 -->
+            <img src="./images/book.jpg" alt="预约扫描添加" class="tour-modal-img">
+            <p style="margin: 1.5rem 0; line-height: 1.8;">
+                感谢您的预约！<br>
+                1. 预约成功后，工作人员将在24小时内与您联系，确认活动细节；<br>
+                2. 活动需提前3天预约，团队（10人及以上）可定制专属行程；<br>
+                3. 图片为粤西客家文化村镇实拍，实际体验以现场为准；<br>
+                4. 咨询电话：13049385235（微信同号），欢迎咨询详情！
+            </p>
+        </div>
+    </div>    
+
+    <!-- 粤西客家民谣音乐节板块 -->
+    <section id="music" class="folk-music-section">
+        <div class="folk-music-inner">
+            <h2>🎵 粤西客家民谣音乐节</h2>
+            <div class="music-card">
+                <h3>🎤 乡音咏流传 · 客家民谣音乐节</h3>
+                <span class="music-tag">客家民谣</span>
+                <span class="music-tag">现场演绎</span>
+                <span class="music-tag">非遗音乐</span>
+                <span class="music-tag">乡村露营</span>
+                <p>粤西客家民谣音乐节以「乡音咏流传」为主题，扎根粤西客家文化沃土，汇聚客家民谣传承人、本土音乐人、民谣创作人，打造一场沉浸式的客家音乐文化盛宴！</p>
+                <p>音乐节将客家传统山歌、竹板歌与现代民谣融合创新，在客家古村的自然山水间，用最质朴的乡音唤醒乡愁，让客家音乐文化以鲜活的形式传播传承。</p>
+                <p><strong>音乐节核心亮点：</strong></p>
+                <ul>
+                    <li>客家非遗音乐展演：客家山歌对唱、竹板歌、客家童谣原生态演绎</li>
+                    <li>本土民谣创作秀：粤西本土音乐人带来原创客家民谣，讲述本土故事</li>
+                    <li>互动音乐体验：游客可参与客家山歌教学、民谣弹唱体验，零基础上手</li>
+                    <li>乡村音乐露营：背靠客家围龙屋，星空下的音乐露营，沉浸式感受乡村美好</li>
+                    <li>客家美食市集：现场汇聚客家酿三宝、粄类、娘酒等特色美食，边听边吃</li>
+                </ul>
+                <p><strong>活动基础信息：</strong> 音乐节定期举办，节假日增设专场，场地位于粤西客家文化核心村镇，交通便利，配套完善，适合家庭、朋友、音乐爱好者共同参与！</p>
+                <!-- 了解详情按钮 - 跳转到新页面，需创建对应html文件 -->
+                <a href="music-festival.html" class="music-detail-btn" target="_self">📖 了解活动详情 & 民宿配套</a>
+            </div>
+        </div>
+    </section>
+
     <!-- 页脚 -->
     <footer class="footer">
-        <p>🗣️ 粤韵乡音 · 中华方言荟</p>
+        <p>🗣️ 客家谣·数智承</p>
         <p>守护乡音，传承中华优秀传统文化</p>
-        <p class="copyright">© 2025 粤韵乡音 版权所有</p>
+        <p class="copyright">© 2025 客家谣·数智承 版权所有</p>
     </footer>
 
     <!-- 方言详情弹窗 -->
@@ -2332,6 +2630,53 @@
                 }
             });
 
+        });
+        // ======== 粤西客家文旅活动预约弹窗逻辑 ========
+        const tourReserveBtn = document.getElementById('tourReserveBtn');
+        const tourModal = document.getElementById('tourModal');
+        const tourCloseBtn = document.querySelector('.tour-close');
+
+        // 打开预约弹窗
+        tourReserveBtn.addEventListener('click', function() {
+            tourModal.style.display = 'flex';
+        });
+
+        // 关闭预约弹窗
+        tourCloseBtn.addEventListener('click', function() {
+            tourModal.style.display = 'none';
+        });
+
+        // 点击弹窗空白处关闭
+        tourModal.addEventListener('click', function(e) {
+            if (e.target === tourModal) {
+                tourModal.style.display = 'none';
+            }
+        });
+
+        // 为文旅板块添加滚动动画监听（与页面其他板块一致）
+        document.addEventListener('DOMContentLoaded', function() {
+            const tourSection = document.querySelector('.hakka-tour-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            if (tourSection) observer.observe(tourSection);
+        });
+
+        // 为民谣音乐节板块添加滚动动画监听（与页面其他板块一致）
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicSection = document.querySelector('.folk-music-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            if (musicSection) observer.observe(musicSection);
         });
     </script>
 </body>
