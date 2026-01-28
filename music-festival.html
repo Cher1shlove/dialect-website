@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>涯歌传情·客韵廉江 · 客家民谣音乐节详情</title>
+    <style>
+        :root {
+            --primary-color: #1a5fb4;
+            --secondary-color: #ff6b35;
+            --bg-gradient: linear-gradient(135deg, rgba(230,247,255,0.8) 0%, rgba(58, 134, 255, 0.7) 50%, rgba(26, 95, 180, 0.3) 100%);
+            --text-color: #333;
+            --white: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --animate-duration: 0.8s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            padding-top: 80px;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { color: var(--primary-color); font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; }
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .back-btn:hover { color: var(--secondary-color); }
+        .festival-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .detail-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .detail-card h2 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .detail-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.6rem;
+            margin: 1.8rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .detail-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: #4E5969;
+        }
+        .detail-card ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .detail-card li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+            color: #334155;
+        }
+        .info-tag {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(26, 95, 180, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 1rem;
+            margin-right: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .hotel-card {
+            background: rgba(248, 250, 255, 0.95);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        .hotel-card h4 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+        .hotel-card .hotel-meta {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+        .package-card {
+            background: rgba(255, 248, 240, 0.95);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--secondary-color);
+        }
+        .package-card h4 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(51, 51, 51, 0.9);
+            backdrop-filter: blur(8px);
+            color: var(--white);
+            margin-top: 3rem;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .footer p { margin-bottom: 1rem; font-size: 1.1rem; }
+        .footer .copyright { font-size: 0.9rem; color: #aaa; }
+        /* 唱歌图片专属样式 - 自适应、圆角阴影、间距适中，适配全设备 */
+        .sing-img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 1.2rem 0;
+            object-fit: cover;
+            height: auto;
+        }
+        /* 3张唱歌图横向排列容器，手机端自动堆叠 */
+        .sing-img-group {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .sing-img-group .sing-img {
+            flex: 1;
+            margin: 0;
+            height: 220px;
+        }
+        /* 新增：擂茶介绍板块样式 */
+        .leicha-section {
+            background: rgba(242, 248, 245, 0.95);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 4px solid #2d936c;
+            text-align: center;
+        }
+        .leicha-img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+        .leicha-title {
+            font-size: 1.8rem;
+            color: #2d936c;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        .leicha-btn {
+            padding: 0.8rem 2rem;
+            background: #2d936c;
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .leicha-btn:hover {
+            background: #237455;
+        }
+        /* 新增：擂茶弹窗样式 */
+        .leicha-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .leicha-modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 100%;
+            padding: 2.5rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+        .modal-close:hover {
+            color: #ff4444;
+        }
+        .modal-title {
+            color: #2d936c;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+        .modal-content h4 {
+            color: #237455;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        .modal-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-content li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+        /* 媒体查询适配 */
+        @media (max-width: 992px) {
+            .detail-card { padding: 2.5rem; }
+            .detail-card h2 { font-size: 2rem; }
+            .detail-card h3 { font-size: 1.5rem; }
+            .leicha-title { font-size: 1.6rem; }
+            .modal-title { font-size: 1.8rem; }
+        }
+        @media (max-width: 768px) {
+            body { padding-top: 70px; }
+            .nav-container { padding: 1rem 1.5rem; }
+            .festival-detail { padding: 2rem 1.5rem; }
+            .detail-card { padding: 2rem; }
+            .detail-card h2 { font-size: 1.8rem; }
+            .info-tag { display: block; margin-right: 0; }
+            .sing-img-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .sing-img-group .sing-img {
+                height: auto;
+            }
+            .leicha-section { padding: 1.5rem; }
+            .leicha-btn { padding: 0.7rem 1.8rem; font-size: 1rem; }
+            .leicha-modal-content { padding: 2rem 1.5rem; }
+        }
+        @media (max-width: 576px) {
+            .logo { font-size: 1.3rem; }
+            .detail-card { padding: 1.5rem; }
+            .hotel-meta { flex-direction: column; gap: 0.5rem !important; }
+            .leicha-title { font-size: 1.4rem; }
+            .modal-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 - 含返回主站按钮 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🗣️ 客家谣·数智承</h1>
+            <a href="index.html" class="back-btn">← 返回主站</a>
+        </div>
+    </nav>
+
+    <!-- 音乐节详情主体 -->
+    <div class="festival-detail">
+        <!-- 活动核心信息 -->
+        <div class="detail-card">
+            <h2>🎵 涯歌传情·客韵廉江 · 客家民谣音乐节 完整详情</h2>
+            <span class="info-tag">活动主题：涯歌传情·客韵廉江（凸显廉江客家唯一性）</span>
+            <span class="info-tag">举办周期：五一/国庆小长假（贴合“五月廉江”文旅品牌），为期2天</span>
+            <span class="info-tag">举办地点：塘山岭风景区（创建中4A景区）/樱花公园广场（成熟场地）</span>
+            <span class="info-tag">适宜人群：音乐爱好者、家庭亲子、文化探索者、团队团建、乡村游受众</span>
+            
+            <h3>📅 2026年核心场次安排</h3>
+            <p>（所有场次时间：14:00-21:30，含日间体验+夜间音乐现场+烟花汇演收尾，雨天顺延）</p>
+            <ul>
+                <li>五一专场：5月1-2日（“五月廉江”文旅联动主题，融入红橙文化）</li>
+                <li>国庆专场：10月1-2日（乡村振兴主题，联动21镇街村民歌手参与）</li>
+                <li>跨年专场：12月31日-1月1日（客家新年祈福主题，增设围龙屋灯光秀）</li>
+            </ul>
+
+            <h3>🎤 三大核心特色板块（传统+创新+年轻化）</h3>
+            <h4>1. 民谣演出：古调新唱+跨界融合</h4>
+            <!-- 3张音乐节唱歌现场图 - 电脑端横向排列，手机端堆叠 -->
+            <div class="sing-img-group">
+                <img src="./images/music1.jpg" alt="客家民谣歌手现场演唱" class="sing-img">
+                <img src="./images/music2.jpg" alt="非遗传承人古调演唱" class="sing-img">
+                <img src="./images/music3.jpg" alt="乡村歌手擂台演唱" class="sing-img">
+            </div>
+            <ul>
+                <li>「古调新唱」：廉江本地客家非遗传承人演唱《王母寻宝下廉江》《忠孝篇》等经典𠊎歌，搭配吉他+竹笛现代编曲，还原“金了打五娜”独特韵律</li>
+                <li>「童谣焕活」：改编《落水天》等客家童谣，邀请亲子组合、校园合唱团演绎，设置互动合唱环节，发放方言注音歌词卡</li>
+                <li>「跨界联动」：粤西本土独立音乐人、国潮乐队，将客家山歌与流行、电音结合，打造《围龙夜曲》《红橙谣》等廉江定制曲目（呼应红橙产业）</li>
+                <li>「乡村舞台」：面向廉江21个镇（街）征集客家民谣爱好者，开设“村民歌手擂台”，优胜者与专业艺人同台，契合“百千万工程”</li>
+            </ul>
+
+            <h4>2. 文化体验：沉浸式客家风情</h4>
+            <!-- 新增：擂茶介绍板块 - 放在文化体验板块最上方，视觉突出 -->
+            <div class="leicha-section">
+                <img src="./images/leicha.jpg" alt="廉江客家擂茶" class="leicha-img">
+                <h3 class="leicha-title">中式抹茶？非也，此乃擂茶！</h3>
+                <button class="leicha-btn" id="leichaBtn">了解更多</button>
+            </div>
+            <ul>
+                <li>「非遗工坊」：客家擂茶制作、艾粄DIY、竹编手作摊位，本地匠人教学，成品可带走，联动“鹅街”民国风情街区延伸体验</li>
+                <li>「民俗展演」：穿插客家游神片段、舞龙舞狮互动，还原“千鸡宴”民俗场景（文创展示替代实物），打造网红打卡点</li>
+                <li>「文化展厅」：陈列石角镇围龙屋模型、客家方言手稿、老乐谱，设置“涯话发音挑战”互动屏，扫码可收听方言教学音频</li>
+            </ul>
+
+            <h4>3. 消费场景：文旅商一体化</h4>
+            <ul>
+                <li>「客味市集」：汇集盐焗鸡、酿豆腐、梅菜扣肉等客家美食，红橙干、陂头米粉、柴火花生等农特产品，支持线下品尝+线上微信小店订购</li>
+                <li>「文创专区」：售卖音乐节定制周边（客家谣·数智承IP联名帆布袋、围龙屋钥匙扣、民谣主题CD），联动贺村文创部落开发限定款</li>
+                <li>「线上联动」：抖音/视频号全程直播，发起“#廉江客家民谣挑战”话题，点赞前3名获下届VIP门票+民宿体验券</li>
+            </ul>
+
+            <h3>🎫 门票政策</h3>
+            <ul>
+                <li>单人通票：88元/人（含所有演出、体验区入场，不含美食、露营、民宿）</li>
+                <li>亲子套票：158元/2大1小（1.4米以下儿童免票，1.4-1.6米儿童半价）</li>
+                <li>团队票：78元/人（10人及以上，可定制专属体验环节）</li>
+                <li>福利票：60岁以上老人、残疾人、客家非遗传承人凭有效证件免票</li>
+            </ul>
+            <p><strong>购票方式</strong>：现场扫码购票/线上提前预约（添加客服微信：13049385235，备注「廉江民谣购票」）</p>
+
+            <!-- 民宿+门票套餐 -->
+            <div class="package-card">
+                <h4>🎁 专属联动套餐：音乐节+住宿一体化</h4>
+                <p>与周边3类民宿联合推出“门票+住宿”套餐，含门票2张+双人早餐+客家文化手册，线上携程/美团专题页售卖，现场设民宿咨询点</p>
+            </div>
+        </div>
+
+        <!-- 周边民宿配套（按计划书分级推荐） -->
+        <div class="detail-card">
+            <h2>🏡 音乐节周边精品民宿配套（3大集群，分级适配）</h2>
+            <p>以音乐节场地为中心，辐射核心民宿集群，步行/短途车程可达，建议提前1个月预约（节假日房源紧张），凭音乐节门票可免费乘坐专线接驳车！</p>
+
+            <div class="hotel-card">
+                <h4>🏘️ 高端体验型：温泉主题民宿（翰林公馆周边）</h4>
+                <div class="hotel-meta">
+                    <span>📍 距离会场：10分钟车程</span>
+                    <span>💰 参考价格：388-688元/晚</span>
+                    <span>🛏️ 房型：双人私汤房/家庭套房/独栋别墅</span>
+                </div>
+                <p>特色：引入大营山天然温泉，提供客家养生餐、免费停车；房间摆放客家童谣书签、涯话常用语卡片，部分房型可租赁客家蓝衫服饰，沉浸式体验；配套“深夜食堂”，提供客家小吃+民谣弹唱小聚场景</p>
+            </div>
+
+            <div class="hotel-card">
+                <h4>🌿 中端舒适型：鹅街民国风情民宿</h4>
+                <div class="hotel-meta">
+                    <span>📍 距离会场：步行15分钟/车程5分钟</span>
+                    <span>💰 参考价格：188-288元/晚</span>
+                    <span>🛏️ 房型：双人房/大床房/家庭房</span>
+                </div>
+                <p>特色：依托“廉江有戏”大楼配套，装修融入客家蓝衫、围龙屋元素；步行可达鹅街美食街，提供方言向导服务；部分房源含客家早餐（擂茶+艾粄），性价比突出</p>
+            </div>
+
+            <div class="hotel-card">
+                <h4>🏡 性价比经济型：镇街精品民宿（河唇镇/石角镇）</h4>
+                <div class="hotel-meta">
+                    <span>📍 距离会场：15分钟车程</span>
+                    <span>💰 参考价格：88-158元/晚</span>
+                    <span>🛏️ 房型：双人房/多人间/农家小院</span>
+                </div>
+                <p>特色：农家改造房源，干净整洁，保留客家民居风貌；提供地道客家早餐，支持拼车接送至会场；适合学生群体、背包客，联动周边农特产品采摘体验</p>
+            </div>
+
+            <h3>🚌 民宿联动增值服务</h3>
+            <ul>
+                <li>交通配套：开通“音乐节专线”，连接3大民宿集群与活动场地，整点发车，凭门票免费乘坐</li>
+                <li>文化植入：所有合作民宿摆放客家文化手册，高端民宿提供客家服饰租赁、方言教学音频二维码</li>
+                <li>安全保障：温泉类民宿公示水质检测报告，所有民宿落实卫生标准，文旅部门全程监管</li>
+            </ul>
+        </div>
+
+        <!-- 交通与咨询指南 -->
+        <div class="detail-card">
+            <h2>🚗 交通指南 & 📞 咨询方式</h2>
+            
+            <h3>🚗 交通方式</h3>
+            <ul>
+                <li>自驾：导航「廉江塘山岭风景区」或「廉江樱花公园广场」，会场周边设免费停车场，车位充足</li>
+                <li>公共交通：廉江汽车站转乘“塘山岭/樱花公园”专线公交，音乐节期间加密班次，每30分钟一班</li>
+                <li>接驳专线：民宿集群→活动场地，整点发车；活动结束后1小时内返程，凭门票免费乘坐</li>
+                <li>网约车：目的地直接输入“廉江客家民谣音乐节主会场”，全程路况良好，车程便捷</li>
+            </ul>
+
+            <h3>📞 官方咨询</h3>
+            <ul>
+                <li>官方客服微信：13049385235（备注「音乐节咨询」，可预约门票、民宿、团建定制）</li>
+                <li>咨询电话：13049385235（工作时间：9:00-18:00）</li>
+                <li>官方公众号：客家谣数智承（每日更新演出嘉宾、民宿套餐、交通指引）</li>
+            </ul>
+
+            <h3>⚠️ 温馨提示</h3>
+            <ul>
+                <li>音乐节现场为户外场地，建议穿着舒适运动鞋、休闲装，做好防晒、防蚊准备</li>
+                <li>现场可自带饮用水，禁止携带易燃易爆、危险品、宠物进入演出区；美食市集支持现场品尝+线上订购</li>
+                <li>民宿房源紧张，尤其是节假日场次，建议确定行程后立即通过套餐预约，避免无房</li>
+                <li>现场设有医疗点、饮水点、休息区、文创专区，如有需要可联系穿客家蓝衫的工作人员</li>
+                <li>夜间烟花汇演环节建议提前占位，拍照打卡可前往“千鸡宴”文创展示区、围龙屋模型展厅</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 新增：擂茶详情弹窗 -->
+    <div class="leicha-modal" id="leichaModal">
+        <div class="leicha-modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 class="modal-title">廉江客家擂茶 · 非遗美食传承</h2>
+            <div class="modal-content">
+                <p>客家擂茶是廉江客家非遗文化的重要组成部分，距今已有上千年历史，与日式抹茶、中式清茶截然不同，是客家先民在迁徙过程中形成的独特饮食文化，被誉为“客家养生第一茶”，也是本次音乐节非遗工坊的核心体验项目。</p>
+                <h4>🌿 擂茶核心原料</h4>
+                <ul>
+                    <li>茶芯：选用廉江本地高山绿茶，香气醇厚，回甘清甜</li>
+                    <li>草本：搭配艾草、薄荷、九层塔等客家特色草本，清热祛湿</li>
+                    <li>坚果：花生、芝麻、核桃仁，研磨后增加口感与营养</li>
+                    <li>辅料：可根据口味加入炒米、花生米、萝卜干等，咸甜皆宜</li>
+                </ul>
+                <h4>🥄 传统制作工艺</h4>
+                <p>擂茶的精髓在“擂”，全程采用手工操作，无机械替代，本次音乐节匠人将现场展示完整工艺：</p>
+                <ul>
+                    <li>备料：将茶叶、草本、坚果洗净晾干，按比例搭配</li>
+                    <li>研磨：放入特制陶制擂钵，用油茶木擂棍顺时针反复研磨，直至成细腻糊状</li>
+                    <li>冲调：用沸水边冲边搅，使茶糊与沸水充分融合，形成浓淡适宜的茶汤</li>
+                    <li>调味：根据喜好加入盐（咸口）或冰糖（甜口），撒上炒米、花生碎即可食用</li>
+                </ul>
+                <h4>💪 擂茶养生价值</h4>
+                <p>廉江客家擂茶不仅口感独特，更兼具养生功效，契合岭南地区的气候特点：</p>
+                <ul>
+                    <li>清热祛湿：薄荷、艾草等草本有效缓解岭南湿热气候带来的身体不适</li>
+                    <li>健脾开胃：坚果与炒米搭配，促进消化，适合饭后饮用</li>
+                    <li>营养丰富：含多种维生素、矿物质和膳食纤维，老少皆宜</li>
+                    <li>解渴解腻：茶汤清爽，可缓解客家重油重盐美食带来的油腻感</li>
+                </ul>
+                <h4>🎵 音乐节专属体验</h4>
+                <p>本次廉江客家民谣音乐节，非遗匠人将现场教学擂茶制作，参与者可亲手体验研磨、冲调全过程，制作完成的擂茶可现场品尝，还能带走专属擂茶伴手礼。体验区位于文化体验板块核心位置，凭音乐节门票即可参与，无需额外付费！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 - 与主站一致 -->
+    <footer class="footer">
+        <p>🗣️ 客家谣·数智承</p>
+        <p>涯歌传情·客韵廉江 · 守护乡音，传承中华优秀传统文化</p>
+        <p class="copyright">© 2025 客家谣·数智承 版权所有</p>
+    </footer>
+
+    <!-- 新增：弹窗控制JavaScript代码 -->
+    <script>
+        // 获取元素
+        const leichaBtn = document.getElementById('leichaBtn');
+        const leichaModal = document.getElementById('leichaModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalContent = document.querySelector('.leicha-modal-content');
+
+        // 打开弹窗
+        leichaBtn.addEventListener('click', function() {
+            leichaModal.style.display = 'flex';
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 关闭弹窗（按钮）
+        modalClose.addEventListener('click', function() {
+            closeModal();
+        });
+
+        // 点击弹窗外层关闭
+        leichaModal.addEventListener('click', function(e) {
+            if (e.target === leichaModal) {
+                closeModal();
+            }
+        });
+
+        // 按ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && leichaModal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // 关闭弹窗通用函数
+        function closeModal() {
+            leichaModal.style.display = 'none';
+            // 恢复页面滚动
+            document.body.style.overflow = 'auto';
+        }
+
+        // 阻止弹窗内部点击触发外层关闭
+        modalContent.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
